@@ -1,0 +1,4 @@
+
+ping servers : ansible all --key-file ~/.ssh/ansibleLinux -i inventory -m ping
+ping servers(shorter version after creating .cfg file): ansible all -m ping
+
