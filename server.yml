@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Run weblogic.ssh as the oracle user
+      command: su - oracle -c /u01/app/oracle/config/domains/mydomain/bin/stopWebLogic.sh
+      register: weblogic_result
+      ignore_errors: true
