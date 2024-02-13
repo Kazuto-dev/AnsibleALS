@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Kill Java process
+      shell: "pkill -f \"/u01/app/oracle/jdk1.8.0_51/bin/java -server -Xms2048m -Xmx12288m -XX:CompileThreshold=8000\""
+      ignore_errors: true
+      register: kill_result
+
+    - name: Check if server was successfully stopped
+      debug:
+        msg: "Operation successfully stopped"
+      when: kill_result.rc == 0
+
+    - name: Execute startWebLogic.sh
+      shell: nohup /u01/app/oracle/config/domains/mydomain/bin/startWebLogic.sh > /dev/null 2>&1 &
+      args:
+        chdir: /u01/app/oracle/config/domains/mydomain/bin/
+      register: start_result
+      ignore_errors: true
+
+    - name: Server is Running 
+      debug:
+        msg: "Operation Successful! Please wait atleast 1 minute!"
+      ignore_errors: true

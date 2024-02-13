@@ -1,0 +1,14 @@
+---
+
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Stoping ELS Server
+      shell: pkill -f "/u01/app/oracle/jdk1.8.0_51/bin/java -server -Xms2048m -Xmx12288m -XX:CompileThreshold=8000 -XX:PermSize=128m -XX:MaxPermSize=256m -Dweblogic.Name=AdminServer -Djava.security.policy=/u01/app/oracle/product/12.2.1/wlserver/server/lib/weblogic.policy -Xverify:none -Djava.endorsed.dirs=/u01/app/oracle/jdk1.8.0_51/jre/lib/endorsed:/u01/app/oracle/product/12.2.1/oracle_common/modules/endorsed -da -Dwls.home=/u01/app/oracle/product/12.2.1/wlserver/server -Dweblogic.home=/u01/app/oracle/product/12.2.1/wlserver/server -Dweblogic.utils.cmm.lowertier.ServiceDisabled=true weblogic.Server"
+      ignore_errors: true
+
+    - name: Check if server was successfully stopped
+      debug:
+        msg: "Operation successfully stopped"
+      when: kill_result.rc == 0
