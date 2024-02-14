@@ -1,0 +1,17 @@
+---
+
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Creating Backup for apple.txt
+      ansible.builtin.copy:
+        src: /u01/app/oracle/config/domains/mydomain/apple.txt
+        dest: /u01/app/oracle/config/domains/mydomain/apple_backup_{{ ansible_date_time.date }}.txt
+      register: backup_result
+
+    - name: DONE
+      debug:
+        msg: "Backup created successfully"
+      when: backup_result.changed
+        

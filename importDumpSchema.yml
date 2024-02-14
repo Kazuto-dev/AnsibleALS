@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Copy dump file from local machine to development machine
+      ansible.builtin.copy:
+        src: "/path/to/local/{{ dump_file_name }}.dmp"
+        dest: "/u01/app/oracle/product/12.2.0.1/dbhome_1/rdbms/log/IC/{{ dump_file_name }}.dmp"
+        remote_src: yes
+
+    - name: Drop all tables in IC schema
+      ansible.builtin.shell: sqlplus ic@DB_DEV @/path/to/local/drop-ic-tables.sql
+      args:
+        executable: /bin/bash
+
+    - name: Import dump schema
+      ansible.builtin.shell: impdp schemaname file=/u01/app/oracle/product/12.2.0.1/dbhome_1/rdbms/log/IC/{{ dump_file_name }}.dmp directory=DATA_PUMP_DIR password=schemapassword
+      args:
+        executable: /bin/bash

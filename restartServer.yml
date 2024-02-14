@@ -14,7 +14,7 @@
         msg: "Operation successfully stopped"
       when: kill_result.rc == 0
 
-    - name: Execute startWebLogic.sh
+    - name: Starting Server
       shell: nohup /u01/app/oracle/config/domains/mydomain/bin/startWebLogic.sh > /dev/null 2>&1 &
       args:
         chdir: /u01/app/oracle/config/domains/mydomain/bin/

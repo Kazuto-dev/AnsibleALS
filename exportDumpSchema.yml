@@ -1,0 +1,20 @@
+---
+
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Export Dump Schema
+      command: |
+        . oraenv
+        icdb1
+        expdp ic file=DATE.dmp directory=DUMP_DIR version=11.2
+        elsDB2020zxc#
+
+    - name: Check generated dump file on DUMP_DIR
+      command: ls /cloudfs/DATE.dmp
+      register: dump_file_check
+
+    - name: Display dump file information
+      debug:
+        msg: "Dump file exists: {{ dump_file_check.rc == 0 }}"
