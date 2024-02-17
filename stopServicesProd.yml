@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Stop services
+      shell: |
+        cd /mwhome/obi/instances/instance1/bin
+        ./opmnctl stopall
+      register: stop_result
+      ignore_errors: true
+
+    - name: Check OPMN status
+      shell: |
+        cd /mwhome/obi/instances/instance1/bin
+        ./opmnctl status
+      register: status_result
+      ignore_errors: true
+
+    - name: Display OPMN status
+      debug:
+        msg: "{{ status_result.stdout }}"

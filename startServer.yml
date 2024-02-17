@@ -4,12 +4,14 @@
   gather_facts: no
   become: true
   tasks:
-    - name: Starting ELS Server
-      debug:
-        msg: "if there is no output, its okay! Server is running..."
+    - name: Execute startWebLogic.sh
+      shell: nohup /u01/app/oracle/config/domains/mydomain/bin/startWebLogic.sh > /dev/null 2>&1 &
+      args:
+        chdir: /u01/app/oracle/config/domains/mydomain/bin/
+      register: start_result
       ignore_errors: true
 
-    - name: Start WebLogic
-      command: su - oracle -c /u01/app/oracle/config/domains/mydomain/bin/startWebLogic.sh
-      register: start_result
+    - name: Server is Running 
+      debug:
+        msg: "Operation Successful! Please wait atleast 1 minute!"
       ignore_errors: true
