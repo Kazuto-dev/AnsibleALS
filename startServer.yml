@@ -4,7 +4,11 @@
   gather_facts: no
   become: true
   tasks:
+<<<<<<< HEAD
     - name: Execute startWebLogic.sh
+=======
+    - name: Starting Server
+>>>>>>> origin/main
       shell: nohup /u01/app/oracle/config/domains/mydomain/bin/startWebLogic.sh > /dev/null 2>&1 &
       args:
         chdir: /u01/app/oracle/config/domains/mydomain/bin/
@@ -15,3 +19,7 @@
       debug:
         msg: "Operation Successful! Please wait atleast 1 minute!"
       ignore_errors: true
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
