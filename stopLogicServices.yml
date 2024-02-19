@@ -1,0 +1,28 @@
+---
+
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Stop services
+      shell: |
+        cd /mwhome/obi/instances/instance1/bin
+        ./opmnctl stopall
+        ./opmnctl status
+      register: stop_services_result
+      ignore_errors: true
+
+    - name: Display Stop services result
+      debug:
+        msg: "{{ stop_services_result.stdout }}"
+
+    - name: Stop WebLogic
+      shell: |
+        cd /mwhome/obi/user_projects/domains/bifoundation_domain/bin
+        ./stopWebLogic.sh
+      register: stop_weblogic_result
+      ignore_errors: true
+
+    - name: Display Stop WebLogic result
+      debug:
+        msg: "{{ stop_weblogic_result.stdout }}"
